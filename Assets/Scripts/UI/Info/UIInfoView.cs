@@ -10,11 +10,10 @@ namespace Asteroid
     {
         [SerializeField] private TextMeshProUGUI text;
 
-        private StringBuilder stringBuilder;
+        private StringBuilder stringBuilder = new StringBuilder();
 
         public void Init()
         {
-            stringBuilder = new StringBuilder();
         }
 
         private void Update()
