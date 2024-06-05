@@ -2,12 +2,17 @@
 
 namespace Asteroid
 {
-    public class GameLoader
+    public class GameFactory
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void OnBeforeSceneLoad()
         {
-            new Game();
+            CreateGame();
+        }
+
+        public static Game CreateGame()
+        { 
+            return new Game();
         }
     }
 }
