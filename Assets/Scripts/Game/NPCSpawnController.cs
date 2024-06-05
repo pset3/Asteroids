@@ -6,12 +6,14 @@ namespace Asteroid
 {
     public class NPCSpawnController : IUpdatable
     {
+        private readonly Game game;
         private bool isDisposed;
         float spawnTime;
 
-        public NPCSpawnController()
+        public NPCSpawnController(Game game)
         {
-            Game.UpdateManager.Register(this);
+            this.game = game;
+            game.UpdateManager.Register(this);
             ScheduleSpawn();
         }
 
@@ -31,15 +33,15 @@ namespace Asteroid
 
         void ScheduleSpawn()
         {
-            spawnTime = UnityEngine.Random.Range(Game.SpawnTimeMin, Game.SpawnTimeMax);
+            spawnTime = UnityEngine.Random.Range(GameConstant.SpawnTimeMin, GameConstant.SpawnTimeMax);
         }
 
         void Spawn()
         {
             if (UnityEngine.Random.value <= 0.5f)
-                AsteroidFactory.CreateAsteroid();
+                AsteroidFactory.CreateAsteroid(game);
             else
-                UFOFactory.CreateUFO();
+                UFOFactory.CreateUFO(game);
 
             ScheduleSpawn();
         }
@@ -50,7 +52,7 @@ namespace Asteroid
             {
                 if (disposing)
                 {
-                    Game.UpdateManager.Unregister(this);
+                    game.UpdateManager.Unregister(this);
                 }
 
                 isDisposed = true;

@@ -1,13 +1,13 @@
 ﻿namespace Asteroid
 {
-    public static class UIInfoController
+    public class UIInfoController
     {
-        private static UIInfoView View;
+        private UIInfoView View;
 
-        public static void Init()
+        public UIInfoController(UI ui, Game game)
         {
-            View = UI.AddUIElement("InfoText").GetComponent<UIInfoView>();
-            View.Init();
+            View = ui.AddUIElement("InfoText").GetComponent<UIInfoView>();
+            View.Init(game);
         }
     }
 }

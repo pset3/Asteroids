@@ -9,7 +9,7 @@ namespace Asteroid
         protected new MovableObjectView view;
         protected bool defaultMove = true;
 
-        public MovableObjectController(MovableObjectModel model, MovableObjectView view) : base(model, view)
+        public MovableObjectController(MovableObjectModel model, MovableObjectView view, Game game) : base(model, view, game)
         {
             Model = model;
             this.view = view;
@@ -28,17 +28,17 @@ namespace Asteroid
             position.x += Model.SpeedX * Time.deltaTime;
             position.y += Model.SpeedY * Time.deltaTime;
 
-            if (position.x > Game.MaxX)
-                position.x -= Game.MaxX * 2f;
+            if (position.x > GameConstant.MaxX)
+                position.x -= GameConstant.MaxX * 2f;
 
-            if (position.x < Game.MinX)
-                position.x += Game.MaxX * 2f;
+            if (position.x < GameConstant.MinX)
+                position.x += GameConstant.MaxX * 2f;
 
-            if (position.y > Game.MaxY)
-                position.y -= Game.MaxY * 2f;
+            if (position.y > GameConstant.MaxY)
+                position.y -= GameConstant.MaxY * 2f;
 
-            if (position.y < Game.MinY)
-                position.y += Game.MaxY * 2f;
+            if (position.y < GameConstant.MinY)
+                position.y += GameConstant.MaxY * 2f;
 
             Model.Position = position;
         }

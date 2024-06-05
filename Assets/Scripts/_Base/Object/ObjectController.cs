@@ -7,13 +7,15 @@ namespace Asteroid
         public ObjectModel Model { get; private set; }
         protected ObjectView view;
         protected bool isDisposed;
+        private readonly Game game;
 
-        public ObjectController(ObjectModel model, ObjectView view)
+        public ObjectController(ObjectModel model, ObjectView view, Game game)
         {
             Model = model;
             this.view = view;
-            Game.AddObject(this);
-            Game.UpdateManager.Register(this);
+            this.game = game;
+            game.AddObject(this);
+            game.UpdateManager.Register(this);
         }
 
         void IUpdatable.Update()
@@ -31,8 +33,8 @@ namespace Asteroid
             {
                 if (disposing)
                 {
-                    Game.RemoveObject(this);
-                    Game.UpdateManager.Unregister(this);
+                    game.RemoveObject(this);
+                    game.UpdateManager.Unregister(this);
                     view.Destroy();
                 }
 

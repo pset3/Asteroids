@@ -2,11 +2,11 @@
 {
     public static class PlayerFactory
     {
-        public static PlayerController CreatePlayer()
+        public static PlayerController CreatePlayer(Game game)
         {
             var model = new PlayerModel();
-            var view = Game.GameObjectLoader.Load("Player").GetComponent<PlayerView>();
-            var controller = new PlayerController(model, view);
+            var view = game.GameObjectLoader.Load("Player").GetComponent<PlayerView>();
+            var controller = new PlayerController(model, view, game);
             view.SetModel(model);
             view.SetController(controller);
             return controller;

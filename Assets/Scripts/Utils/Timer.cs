@@ -6,6 +6,7 @@ namespace Asteroid
     public class Timer : IUpdatable, IDisposable
     {
         private float time;
+        private readonly Game game;
         private float timer;
         private Action action;
         private bool isActive;
@@ -16,11 +17,12 @@ namespace Asteroid
         public bool IsReady => isReady;
         public float Time => timer;
 
-        public Timer(float time, Action action = null, bool autoStart = true, bool isReadyAtStart = false)
+        public Timer(float time, Game game, Action action = null, bool autoStart = true, bool isReadyAtStart = false)
         {
             this.time = time;
+            this.game = game;
             this.action = action;
-            Game.UpdateManager.Register(this);
+            game.UpdateManager.Register(this);
 
             if (isReadyAtStart)
                 isReady = true;
@@ -66,7 +68,7 @@ namespace Asteroid
             {
                 if (disposing)
                 {
-                    Game.UpdateManager.Unregister(this);
+                    game.UpdateManager.Unregister(this);
                 }
 
                 isDisposed = true;

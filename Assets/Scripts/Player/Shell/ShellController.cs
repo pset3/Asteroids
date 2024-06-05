@@ -10,10 +10,10 @@ namespace Asteroid
 
         Timer destroyTimer;
 
-        public ShellController(ShellModel model, ShellView view) : base(model, view)
+        public ShellController(ShellModel model, ShellView view, Game game) : base(model, view, game)
         {
             Model = model;
-            destroyTimer = new Timer(model.LifeTime, Dispose);
+            destroyTimer = new Timer(model.LifeTime, game, Dispose);
         }
 
         public void Damage()

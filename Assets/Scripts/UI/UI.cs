@@ -2,25 +2,25 @@
 
 namespace Asteroid
 {
-    public static class UI
+    public class UI
     {
-        private static Transform canvasTransform;
+        private Transform canvasTransform;
+        private Game game;
 
-        public static void Init()
+        public UI(Game game)
         {
+            this.game = game;
             LoadCanvas();
-            UIInfoController.Init();
-            GameOverWindowController.Init();
         }
 
-        private static void LoadCanvas()
+        private void LoadCanvas()
         {
-            canvasTransform = Game.GameObjectLoader.Load("Canvas").transform;
+            canvasTransform = game.GameObjectLoader.Load("Canvas").transform;
         }
 
-        public static GameObject AddUIElement(string uiElementName)
+        public GameObject AddUIElement(string uiElementName)
         {
-            GameObject go = Game.GameObjectLoader.Load(uiElementName);
+            GameObject go = game.GameObjectLoader.Load(uiElementName);
             go.transform.SetParent(canvasTransform, false);
             return go;
         }

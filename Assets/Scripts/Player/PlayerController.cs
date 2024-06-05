@@ -26,13 +26,15 @@ namespace Asteroid
         private bool isFireShell;
         private Timer fireShellCooldown;
         private bool isFireLaser;
+        private Game game;
 
         private Timer fireLaserCooldown;
         private Timer reloadLaserTimer;
 
-        public PlayerController(PlayerModel model, PlayerView view) : base(model, view)
+        public PlayerController(PlayerModel model, PlayerView view, Game game) : base(model, view, game)
         {
             Model = model;
+            this.game = game;
             Model.Rotation = 90;
             Model.LaserCount = LaserMaxCount;
             defaultMove = false;
@@ -44,9 +46,9 @@ namespace Asteroid
             }
 
             controls.gameplay.Enable();
-            fireShellCooldown = new Timer(FireShellCooldownTime, null, true, true);
-            fireLaserCooldown = new Timer(FireLaserCooldownTime, null, true, true);
-            reloadLaserTimer = new Timer(ReloadLaserTime, ReloadLaser, false, false);
+            fireShellCooldown = new Timer(FireShellCooldownTime, game, null, true, true);
+            fireLaserCooldown = new Timer(FireLaserCooldownTime, game, null, true, true);
+            reloadLaserTimer = new Timer(ReloadLaserTime, game, ReloadLaser, false, false);
         }
 
         protected override void Update()
@@ -99,12 +101,12 @@ namespace Asteroid
         {
             Vector2 direct = new Vector2(Mathf.Cos(Model.Rotation * Mathf.Deg2Rad), Mathf.Sin(Model.Rotation * Mathf.Deg2Rad));
             Vector2 position = Model.Position + direct * SpawnShellOffset;
-            ShellFactory.CreateShell(position, Model.Rotation);
+            ShellFactory.CreateShell(position, Model.Rotation, game);
         }
 
         private void FireLaser()
         {
-            LaserFactory.CreateLaser(Model.Position, Model.Rotation);
+            LaserFactory.CreateLaser(Model.Position, Model.Rotation, game);
         }
 
         private void ReloadLaser()
@@ -136,7 +138,7 @@ namespace Asteroid
 
         public void Damage()
         {
-            Game.GameOver();
+            game.GameOver();
         }
 
         public void OnMoveLeft(InputAction.CallbackContext context)

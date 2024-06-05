@@ -3,70 +3,64 @@ using UnityEngine;
 
 namespace Asteroid
 {
-    public static class Game
+
+    public class Game
     {
-        public static GameObjectLoader GameObjectLoader { get; private set; }
-        public static UpdateManager UpdateManager { get; private set; }
-        public static PlayerController Player { get; private set; }
-        public static NPCSpawnController NPCSpawnController { get; private set; }
+        private GameObjectLoader gameObjectLoader;
+        private UpdateManager updateManager;
+        private PlayerController player;
+        private NPCSpawnController NPCSpawnController;
+        private List<ObjectController> objects = new List<ObjectController>();
+        private UI ui;
+        private UIInfoController uIInfoController;
+        private GameOverWindowController gameOverWindowController;
 
-        public const float Aspect = 16f / 9f;
-        public const float MinY = -5f;
-        public const float MaxY = 5f;
-        public const float MinX = -5f * Aspect;
-        public const float MaxX = 5f * Aspect;
-        public const float SpawnTimeMin = 5f;
-        public const float SpawnTimeMax = 10f;
-        public const int MaxNPC = 10;
+        public PlayerController Player => player;
+        public GameObjectLoader GameObjectLoader => gameObjectLoader;
+        public UpdateManager UpdateManager => updateManager;
 
-        private static List<ObjectController> objects = new List<ObjectController>();
-
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void OnBeforeSceneLoad()
-        {
-            Init();
-        }
-
-        public static void Init()
+        public Game()
         {
             Debug.Log("Game Init");
             LoadGameObjectLoader();
-            UpdateManager = GameObjectLoader.Load("UpdateManager").GetComponent<UpdateManager>();
-            Player = PlayerFactory.CreatePlayer();
-            NPCSpawnController = new NPCSpawnController();
-            UI.Init();
+            updateManager = gameObjectLoader.Load("UpdateManager").GetComponent<UpdateManager>();
+            player = PlayerFactory.CreatePlayer(this);
+            NPCSpawnController = new NPCSpawnController(this);
+            ui = new UI(this);
+            uIInfoController = new UIInfoController(ui, this);
+            gameOverWindowController = new GameOverWindowController(ui, this);
         }
 
-        private static void LoadGameObjectLoader()
+        private void LoadGameObjectLoader()
         {
-            GameObjectLoader = Resources.Load<GameObjectLoader>("GameObjectLoader");
+            gameObjectLoader = Resources.Load<GameObjectLoader>("GameObjectLoader");
         }
 
-        public static void GameOver()
+        public void GameOver()
         {
-            UpdateManager.Pause();
-            GameOverWindowController.Show();
+            updateManager.Pause();
+            gameOverWindowController.Show();
         }
 
-        public static void RestartGame()
+        public void RestartGame()
         {
             DisposeObjects();
-            GameOverWindowController.Hide();
-            UpdateManager.Unpause();
-            Player = PlayerFactory.CreatePlayer();
+            gameOverWindowController.Hide();
+            updateManager.Unpause();
+            player = PlayerFactory.CreatePlayer(this);
         }
 
-        public static void AddObject(ObjectController obj)
+        public void AddObject(ObjectController obj)
         {
             objects.Add(obj);
         }
 
-        public static void RemoveObject(ObjectController obj)
+        public void RemoveObject(ObjectController obj)
         {
             objects.Remove(obj);
         }
 
-        public static void DisposeObjects()
+        public void DisposeObjects()
         {
             var objs = objects.ToArray();
 

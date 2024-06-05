@@ -10,24 +10,26 @@ namespace Asteroid
     {
         [SerializeField] private TextMeshProUGUI scoreText;
 
+        private Game game;
         private StringBuilder stringBuilder = new StringBuilder();
 
-        public void Init()
+        public void Init(Game game)
         {
+            this.game = game;
         }
 
         public override void Show()
         {
             stringBuilder.Clear();
             stringBuilder.Append("SCORE: ");
-            stringBuilder.Append(Game.Player.Model.Score);
+            stringBuilder.Append(game.Player.Model.Score);
             scoreText.text = stringBuilder.ToString();
             base.Show();
         }
 
         public void RestartGame()
         {
-            Game.RestartGame();
+            game.RestartGame();
         }
     }
 }

@@ -1,22 +1,22 @@
 ﻿namespace Asteroid
 {
-    public static class GameOverWindowController
+    public class GameOverWindowController
     {
-        private static GameOverWindowView View;
+        private GameOverWindowView View;
 
-        public static void Init()
+        public GameOverWindowController(UI ui, Game game)
         {
-            View = UI.AddUIElement("GameOverWindow").GetComponent<GameOverWindowView>();
-            View.Init();
+            View = ui.AddUIElement("GameOverWindow").GetComponent<GameOverWindowView>();
+            View.Init(game);
             View.Hide();
         }
 
-        public static void Show()
+        public void Show()
         {
             View.Show();
         }
 
-        public static void Hide()
+        public void Hide()
         {
             View.Hide();
         }
